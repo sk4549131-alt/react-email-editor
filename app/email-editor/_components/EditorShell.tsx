@@ -61,19 +61,6 @@ export default function EditorShell() {
                 </div>
             </main>
         </section>
-        {
-            pointer && drag && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        left: pointer.x,
-                        top: pointer.y
-                    }}
-                >
-                    {drag}
-                </div>
-            )
-        }
         </>
     )
 }

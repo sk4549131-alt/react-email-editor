@@ -16,6 +16,21 @@ const blocks = [
 
 export default function Panel({setDrag} : Props) {
 
+    function handleDragStart(e: React.DragEvent<HTMLDivElement>) {
+        const node = e.currentTarget;
+        const ghost = node.cloneNode(true) as HTMLElement;
+
+        ghost.style.position = 'absolute';
+        ghost.style.top = '-9999px';
+        ghost.style.width = `${node.offsetWidth}px`;
+        document.body.appendChild(ghost);
+
+        e.dataTransfer.setDragImage(ghost, node.offsetWidth / 2, node.offsetHeight / 2);
+
+        requestAnimationFrame(() => document.body.removeChild(ghost));
+    }
+
+
     return (
         <>
         <div className="flex h-full flex-col bg-white">
@@ -42,8 +57,10 @@ export default function Panel({setDrag} : Props) {
                 <div className="grid grid-cols-2 gap-2">
                     {blocks.map((block) => (
                         <div
+                            draggable
                             key={block.label}
                             className="flex cursor-grab flex-col items-center gap-2 rounded-lg border border-gray-200 bg-white py-4 text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50 active:cursor-grabbing"
+                            onDragStart={handleDragStart}
                             onPointerDown={() => setDrag(block.label)}
                         >
                             <span className="[&>svg]:h-5 [&>svg]:w-5">{block.icon}</span>
