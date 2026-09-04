@@ -1,7 +1,5 @@
-import EditorShell from "./_components/EditorShell";
+import Editor from "@/app/email-editor/_components/Editor";
 
 export default function Home() {
-    return (
-        <EditorShell />
-    );
+    return <Editor />;
 }
