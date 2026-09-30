@@ -8,6 +8,7 @@
 import Panel from "@/app/email-editor/_components/Panel";
 import Preview from "@/app/email-editor/_components/Preview";
 import Canvas from "@/app/email-editor/_components/Canvas";
+import type {Block} from "@/app/email-editor/_components/editorType/block";
 import {useState, useRef, useEffect} from "react";
 
 type Position = {
@@ -15,11 +16,21 @@ type Position = {
     y: number,
 }
 
+type Drag = {
+    type: 'move' | 'drop',
+    title: string
+}
+
+const initialBlocks: Block[] = [];
+
 export default function Editor() {
     const iframe =
         useRef<HTMLIFrameElement>(null);
     const [position, setPosition] = useState<Position | null>(null);
     const [insideIframe, setInsideIframe] = useState<boolean>(false);
+    const [drag, setDrag] =useState<Drag | null>(null);
+    // 실제 데이터
+    const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
 
     useEffect(() => {
         const rootIframe = iframe?.current?.getBoundingClientRect();
@@ -38,12 +49,19 @@ export default function Editor() {
     return (
         <section className="flex h-screen bg-gray-100">
             <article className="w-[320px] shrink-0 overflow-y-auto border-r border-gray-200 bg-white">
-                <Panel setPosition={setPosition} position={position} />
+                <Panel setPosition={setPosition} position={position} setDrag={setDrag} drag={drag} />
             </article>
-            <article className="flex flex-1 items-center justify-center overflow-y-auto px-10 py-12">
-                <div className="w-[600px] h-[600px] max-w-full">
-                    <Preview iframe={iframe}>
-                        <Canvas insideIframe={insideIframe} />
+            <article className="flex flex-1 items-start justify-center overflow-y-auto px-10 py-12">
+                <div className="w-[800px] max-w-full">
+                    <Preview iframe={iframe} insideIframe={insideIframe}>
+                        <Canvas 
+                            iframe={iframe}
+                            insideIframe={insideIframe} 
+                            position={position}
+                            drag={drag}
+                            blocks={blocks}
+                            setBlocks={setBlocks}
+                        />
                     </Preview>
                 </div>
             </article>

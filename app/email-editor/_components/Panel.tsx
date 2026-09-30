@@ -17,22 +17,24 @@ import {
     Code2,
     Search,
 } from "lucide-react";
-import {useState} from "react";
 
 type Position = {
     x: number,
     y: number,
 }
 
-type Props = {
-    setPosition: ({x,y}: Position) => void;
-    position: Position | null
+type Drag = {
+    type: 'move' | 'drop',
+    title: string
 }
 
-type Drag = {
-    flag: boolean,
-    type: string
+type Props = {
+    setPosition: (position: Position) => void;
+    position: Position | null,
+    setDrag: (drag: Drag | null) => void;
+    drag : Drag | null,
 }
+
 
 const blocks = [
     { label: "텍스트", icon: <AlignLeft strokeWidth={1.5} /> },
@@ -46,31 +48,30 @@ const blocks = [
     { label: "HTML", icon: <Code2 strokeWidth={1.5} /> },
 ];
 
-export default function Panel({setPosition, position}: Props) {
-    const [drag, setDrag] =useState<Drag | null>(null);
+export default function Panel({setPosition, position, setDrag, drag}: Props) {
 
     function pointerDown(
         e: React.PointerEvent<HTMLDivElement>,
         label: string
     ) {
-        setDrag({flag: true, type: label});
-        e.currentTarget.setPointerCapture(e.pointerId)
+        setDrag({type: 'move', title: label});
+        e.currentTarget.setPointerCapture(e.pointerId);
 
         console.log('pointerDown');
     }
 
     function pointerMove(e: React.PointerEvent<HTMLDivElement>) {
-        if (drag?.flag) {
+        if (drag?.type === 'move') {
             setPosition({
                 x: e.clientX,
                 y: e.clientY,
-            })
-            console.log('pointerMove');
+            });
         }
+        console.log('pointerMove');
     }
 
-    function pointerUp(e: React.PointerEvent<HTMLDivElement>) {
-        setDrag(null);
+    function pointerUp(e: React.PointerEvent<HTMLDivElement>, label: string) {
+        setDrag({type: 'drop', title: label});
         e.currentTarget.releasePointerCapture(e.pointerId);
         console.log('pointerUp');
     }
@@ -105,10 +106,11 @@ export default function Panel({setPosition, position}: Props) {
                                 className="flex cursor-grab flex-col items-center gap-2 rounded-lg border border-gray-200 bg-white py-4 text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50"
                                 onPointerMove={pointerMove}
                                 onPointerDown={
-                                    (e) =>
-                                        pointerDown(e, block.label)
+                                    (e) => pointerDown(e, block.label)
                                 }
-                                onPointerUp={pointerUp}
+                                onPointerUp={
+                                    (e) => pointerUp(e, block.label)
+                                }
                             >
                                 <span className="[&>svg]:h-5 [&>svg]:w-5">{block.icon}</span>
                                 <span className="text-[11px] font-medium">{block.label}</span>
@@ -118,13 +120,13 @@ export default function Panel({setPosition, position}: Props) {
                 </div>
             </div>
             {
-                drag && position && (
+                drag?.type === 'move' && position && (
                     <div style={{
                         position: 'absolute',
                         left: position.x,
                         top: position.y,
                     }}>
-                        sadas
+                        { drag.title }
                     </div>
                 )
             }
