@@ -8,29 +8,30 @@
 import Panel from "@/app/email-editor/_components/Panel";
 import Preview from "@/app/email-editor/_components/Preview";
 import Canvas from "@/app/email-editor/_components/Canvas";
-import type {Block} from "@/app/email-editor/_components/editorType/block";
 import {useState, useRef, useEffect} from "react";
+import type {Block} from "@/app/email-editor/_components/editorType/block";
 
 type Position = {
     x: number,
     y: number,
 }
-
-type Drag = {
-    type: 'move' | 'drop',
-    title: string
-}
-
-const initialBlocks: Block[] = [];
+type Drag = { 
+    phase: 'move' | 'drop', 
+    type: string 
+};
 
 export default function Editor() {
-    const iframe =
-        useRef<HTMLIFrameElement>(null);
+    const iframe = useRef<HTMLIFrameElement>(null);
     const [position, setPosition] = useState<Position | null>(null);
     const [insideIframe, setInsideIframe] = useState<boolean>(false);
-    const [drag, setDrag] =useState<Drag | null>(null);
-    // 실제 데이터
-    const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
+    // canvas에 그려줄 패널 순서
+    const [contents, setContents] = useState<Block[]>([
+        { id: 'default-text', type: '텍스트', content: { text: '테스트 텍스트' } },
+        //{ id: 'default-text-2', type: '텍스트', content: { text: '테스트 텍스트' } },
+    ]);
+    // 드래그 이벤트 상태를 저장
+    const [drag, setDrag] = useState<Drag | null>(null);
+
 
     useEffect(() => {
         const rootIframe = iframe?.current?.getBoundingClientRect();
@@ -49,18 +50,19 @@ export default function Editor() {
     return (
         <section className="flex h-screen bg-gray-100">
             <article className="w-[320px] shrink-0 overflow-y-auto border-r border-gray-200 bg-white">
-                <Panel setPosition={setPosition} position={position} setDrag={setDrag} drag={drag} />
+                <Panel setPosition={setPosition} position={position} drag={drag} setDrag={setDrag} />
             </article>
-            <article className="flex flex-1 items-start justify-center overflow-y-auto px-10 py-12">
-                <div className="w-[800px] max-w-full">
-                    <Preview iframe={iframe} insideIframe={insideIframe}>
+            <article className="flex flex-1 items-center justify-center overflow-y-auto px-10 py-12">
+                <div className="w-[600px] h-[600px] max-w-full">
+                    <Preview iframe={iframe} >
                         <Canvas 
                             iframe={iframe}
-                            insideIframe={insideIframe} 
                             position={position}
-                            drag={drag}
-                            blocks={blocks}
-                            setBlocks={setBlocks}
+                            insideIframe={insideIframe}
+                            drag={drag} 
+                            setDrag={setDrag}
+                            contents={contents}
+                            setContents={setContents}
                         />
                     </Preview>
                 </div>
