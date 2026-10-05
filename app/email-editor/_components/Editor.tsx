@@ -52,8 +52,8 @@ export default function Editor() {
             <article className="w-[320px] shrink-0 overflow-y-auto border-r border-gray-200 bg-white">
                 <Panel setPosition={setPosition} position={position} drag={drag} setDrag={setDrag} />
             </article>
-            <article className="flex flex-1 items-center justify-center overflow-y-auto px-10 py-12">
-                <div className="w-[600px] h-[600px] max-w-full">
+            <article className="flex-1 overflow-auto">
+                <div className="mx-auto h-full w-[600px] bg-white">
                     <Preview iframe={iframe} >
                         <Canvas 
                             iframe={iframe}

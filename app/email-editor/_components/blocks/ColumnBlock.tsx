@@ -4,9 +4,15 @@ type Props = {
 
 export default function ColumnBlock({ columns }: Props) {
     return (
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 12 }}>
             {Array.from({ length: columns }).map((_, i) => (
-                <div key={i} style={{ flex: 1, minHeight: 40, border: '1px dashed #d1d5db' }} />
+                <div key={i} style={{
+                    flex: 1,
+                    minHeight: 64,
+                    border: '1.5px dashed #cbd5e1',
+                    borderRadius: 8,
+                    background: '#f8fafc',
+                }} />
             ))}
         </div>
     );

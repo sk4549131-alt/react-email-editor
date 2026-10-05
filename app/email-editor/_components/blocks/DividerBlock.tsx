@@ -1,3 +1,3 @@
 export default function DividerBlock() {
-    return <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb' }} />;
+    return <hr style={{ margin: 0, border: 'none', borderTop: '1px solid #e5e7eb' }} />;
 }

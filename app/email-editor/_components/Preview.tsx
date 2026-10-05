@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-const defaultHtml = `<style>html, body { height: 100%; margin: 0; }</style>`;
+const defaultHtml = `<style>html, body { height: 100%; margin: 0; } body { user-select: none; -webkit-user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }</style>`;
 
     
 export default function Preview({

@@ -35,18 +35,40 @@ type Position = {
 const defaultHtml = (
     <div style={{
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: 160,
-        margin: 16,
-        border: '2px dashed #d1d5db',
-        borderRadius: 8,
-        fontFamily: 'sans-serif',
-        fontSize: 14,
-        color: '#9ca3af',
-        background: '#f9fafb',
+        gap: 12,
+        minHeight: 220,
+        margin: 24,
+        border: '1.5px dashed #cbd5e1',
+        borderRadius: 16,
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        background: 'linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)',
     }}>
-        Drag Here
+        <div style={{
+            width: 48,
+            height: 48,
+            borderRadius: 12,
+            background: '#fff',
+            boxShadow: '0 1px 3px rgba(15,23,42,0.12), 0 0 0 1px rgba(15,23,42,0.04)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748b"
+                 strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#334155' }}>
+                블록을 여기로 끌어다 놓으세요
+            </div>
+            <div style={{ marginTop: 4, fontSize: 12, color: '#94a3b8' }}>
+                왼쪽 패널에서 원하는 블록을 선택하세요
+            </div>
+        </div>
     </div>
 );
 
@@ -102,7 +124,7 @@ function renderBlock(block: Block) {
 
 const BlockItem = memo(function BlockItem({ block }: { block: Block }) {
     return (
-        <div data-block-id={block.id}>
+        <div data-block-id={block.id} style={{ padding: '12px 24px' }}>
             {renderBlock(block)}
         </div>
     );
@@ -113,18 +135,24 @@ function DropIndicator() {
     return (
         <div style={{
             height: 72,
-            margin: '4px 0',
+            margin: '8px 16px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            border: '1.5px dashed #3b82f6',
-            borderRadius: 8,
-            background: 'rgba(59,130,246,0.08)',
-            color: '#3b82f6',
-            fontFamily: 'sans-serif',
-            fontSize: 12,
-            fontWeight: 500,
+            gap: 6,
+            border: '1.5px dashed #60a5fa',
+            borderRadius: 12,
+            background: 'linear-gradient(180deg, rgba(59,130,246,0.10) 0%, rgba(59,130,246,0.04) 100%)',
+            boxShadow: '0 0 0 4px rgba(59,130,246,0.08)',
+            color: '#2563eb',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            fontSize: 13,
+            fontWeight: 600,
         }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
             여기에 놓기
         </div>
     );
@@ -200,12 +228,12 @@ export default function Canvas({
         {  
             contents.map((block, i) => (
                 <Fragment key={block.id}>
-                    { isDragging && dropIndex === i && <DropIndicator />} 
+                    {insideIframe && isDragging && dropIndex === i && <DropIndicator />} 
                     <BlockItem key={block.id} block={block} />
                 </Fragment>
             ))
         }
-        { isDragging && dropIndex === contents.length && <DropIndicator />} 
+        {insideIframe && isDragging && dropIndex === contents.length && <DropIndicator />} 
         </>
     )
 }

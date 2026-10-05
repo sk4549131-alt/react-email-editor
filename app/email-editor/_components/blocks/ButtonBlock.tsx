@@ -5,18 +5,22 @@ type Props = {
 
 export default function ButtonBlock({ label, href }: Props) {
     return (
-        <a
-            href={href}
-            style={{
-                display: 'inline-block',
-                padding: '8px 16px',
-                background: '#111827',
-                color: '#fff',
-                borderRadius: 6,
-                textDecoration: 'none',
-            }}
-        >
-            {label}
-        </a>
+        <div style={{ textAlign: 'center' }}>
+            <a
+                href={href}
+                style={{
+                    display: 'inline-block',
+                    padding: '12px 28px',
+                    background: '#111827',
+                    color: '#fff',
+                    borderRadius: 8,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                }}
+            >
+                {label}
+            </a>
+        </div>
     );
 }

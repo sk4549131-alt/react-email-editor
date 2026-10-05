@@ -102,7 +102,7 @@ export default function Panel({setPosition, position, drag, setDrag}: Props) {
                         {blocks.map((block) => (
                             <div
                                 key={block.label}
-                                className="flex cursor-grab flex-col items-center gap-2 rounded-lg border border-gray-200 bg-white py-4 text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50"
+                                className="flex cursor-grab select-none flex-col items-center gap-2 rounded-lg border border-gray-200 bg-white py-4 text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50"
                                 onPointerMove={pointerMove}
                                 onPointerDown={
                                     (e) =>
